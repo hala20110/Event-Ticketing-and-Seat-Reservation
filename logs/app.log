@@ -454,3 +454,40 @@ org.springframework.http.converter.HttpMessageNotReadableException: Required req
 2026-09-13T17:26:36.630+03:00  INFO 23224 --- [ticketing] [http-nio-8082-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
 2026-09-13T17:26:36.630+03:00  INFO 23224 --- [ticketing] [http-nio-8082-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
 2026-09-13T17:26:36.632+03:00  INFO 23224 --- [ticketing] [http-nio-8082-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2026-09-13T18:20:51.562+03:00  WARN 23224 --- [ticketing] [http-nio-8082-exec-6] c.n.t.Controller.GlobalExceptionHandler  : Reservation error: Seat 6 is not available path:/api/reservations
+2026-09-13T18:24:19.162+03:00  WARN 23224 --- [ticketing] [http-nio-8082-exec-1] c.n.t.Controller.GlobalExceptionHandler  : Reservation error: Seat 7 is not available path:/api/reservations
+2026-09-13T18:40:53.169+03:00  INFO 23224 --- [ticketing] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-09-13T18:40:53.173+03:00  INFO 23224 --- [ticketing] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-09-13T18:40:53.175+03:00  INFO 23224 --- [ticketing] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2026-09-13T18:40:56.656+03:00  INFO 13584 --- [ticketing] [main] c.n.ticketing.TicketingApplication       : Starting TicketingApplication using Java 21.0.5 with PID 13584 (D:\CoursesProjects\Spring Boot Internship Netpoint 2026\ticketing\target\classes started by ADMIN in D:\CoursesProjects\Spring Boot Internship Netpoint 2026\ticketing)
+2026-09-13T18:40:56.660+03:00  INFO 13584 --- [ticketing] [main] c.n.ticketing.TicketingApplication       : No active profile set, falling back to 1 default profile: "default"
+2026-09-13T18:40:57.142+03:00  INFO 13584 --- [ticketing] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-09-13T18:40:57.186+03:00  INFO 13584 --- [ticketing] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 39 ms. Found 7 JPA repository interfaces.
+2026-09-13T18:40:57.532+03:00  INFO 13584 --- [ticketing] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8082 (http)
+2026-09-13T18:40:57.542+03:00  INFO 13584 --- [ticketing] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-09-13T18:40:57.543+03:00  INFO 13584 --- [ticketing] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.31]
+2026-09-13T18:40:57.586+03:00  INFO 13584 --- [ticketing] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-09-13T18:40:57.586+03:00  INFO 13584 --- [ticketing] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 900 ms
+2026-09-13T18:40:57.677+03:00  INFO 13584 --- [ticketing] [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-09-13T18:40:57.734+03:00  INFO 13584 --- [ticketing] [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.5.3.Final
+2026-09-13T18:40:57.769+03:00  INFO 13584 --- [ticketing] [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-09-13T18:40:57.993+03:00  INFO 13584 --- [ticketing] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-09-13T18:40:58.017+03:00  INFO 13584 --- [ticketing] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-09-13T18:40:58.136+03:00  INFO 13584 --- [ticketing] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@38a38ed4
+2026-09-13T18:40:58.138+03:00  INFO 13584 --- [ticketing] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-09-13T18:40:58.165+03:00  WARN 13584 --- [ticketing] [main] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-09-13T18:40:58.873+03:00  INFO 13584 --- [ticketing] [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-09-13T18:40:58.977+03:00  WARN 13584 --- [ticketing] [main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2026-09-13T18:40:58.977+03:00  WARN 13584 --- [ticketing] [main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "uke7qdxh4fch1yfisduker8j6w2" of relation "payments" does not exist, skipping
+2026-09-13T18:40:59.059+03:00  INFO 13584 --- [ticketing] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-09-13T18:40:59.290+03:00  INFO 13584 --- [ticketing] [main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name myUserDetailsService
+2026-09-13T18:40:59.344+03:00  INFO 13584 --- [ticketing] [main] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-09-13T18:40:59.691+03:00  WARN 13584 --- [ticketing] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-09-13T18:41:00.065+03:00  INFO 13584 --- [ticketing] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8082 (http) with context path '/'
+2026-09-13T18:41:00.070+03:00  INFO 13584 --- [ticketing] [main] c.n.ticketing.TicketingApplication       : Started TicketingApplication in 3.653 seconds (process running for 3.931)
+2026-09-13T18:41:04.219+03:00  INFO 13584 --- [ticketing] [http-nio-8082-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-09-13T18:41:04.219+03:00  INFO 13584 --- [ticketing] [http-nio-8082-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-09-13T18:41:04.221+03:00  INFO 13584 --- [ticketing] [http-nio-8082-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2026-09-13T18:43:16.833+03:00  INFO 13584 --- [ticketing] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-09-13T18:43:16.834+03:00  INFO 13584 --- [ticketing] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-09-13T18:43:16.836+03:00  INFO 13584 --- [ticketing] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.

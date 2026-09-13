@@ -55,4 +55,11 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT)
                 .body(new ErrorResponse(ex.getMessage(), 409, req.getRequestURI()));
     }
+    @ExceptionHandler(com.netpoint.ticketing.Exceptions.PaymentException.class)
+    public ResponseEntity<ErrorResponse> payment(com.netpoint.ticketing.Exceptions.PaymentException ex,
+                                                 jakarta.servlet.http.HttpServletRequest req) {
+        log.warn("Payment error: {} path:{}", ex.getMessage(), req.getRequestURI());
+        return ResponseEntity.status(org.springframework.http.HttpStatus.BAD_REQUEST)
+                .body(new ErrorResponse(ex.getMessage(), 400, req.getRequestURI()));
+    }
 }
