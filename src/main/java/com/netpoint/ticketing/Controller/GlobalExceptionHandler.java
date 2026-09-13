@@ -47,4 +47,12 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(new ErrorResponse(ex.getMessage(), 500, req.getRequestURI()));
     }
+
+    @ExceptionHandler(com.netpoint.ticketing.Exceptions.ReservationException.class)
+    public ResponseEntity<ErrorResponse> reservation(com.netpoint.ticketing.Exceptions.ReservationException ex,
+                                                     HttpServletRequest req) {
+        log.warn("Reservation error: {} path:{}", ex.getMessage(), req.getRequestURI());
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(new ErrorResponse(ex.getMessage(), 409, req.getRequestURI()));
+    }
 }
