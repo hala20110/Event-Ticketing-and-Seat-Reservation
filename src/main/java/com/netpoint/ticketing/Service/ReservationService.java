@@ -41,13 +41,16 @@ public class ReservationService {
         Event event = eventRepository.findById(dto.getEventId())
                 .orElseThrow(() -> new ReservationException("Event not found"));
 
-        // 3. Validate every requested seat belongs to this event
-        List<Seat> seats = seatRepository.findAllByIdInAndEventId(dto.getSeatIds(), event.getId());
+        // 3. *** LOCK THE SEAT ROWS ***
+        List<Seat> seats = seatRepository.findAllByIdInAndEventIdForUpdate(
+                dto.getSeatIds(), event.getId());
+
         if (seats.size() != dto.getSeatIds().size()) {
             throw new ReservationException("One or more seats do not belong to this event");
         }
 
         // 4. Every seat must currently be AVAILABLE
+        //    (we are holding the lock, so no other transaction can flip it under us)
         for (Seat seat : seats) {
             if (seat.getStatus() != SeatStatus.AVAILABLE) {
                 throw new ReservationException("Seat " + seat.getSeatNumber() + " is not available");
@@ -66,7 +69,7 @@ public class ReservationService {
 
         reservation = reservationRepository.save(reservation);
 
-        // 6. Create one ReservationItem per seat, and flip seat status to HELD
+        // 6. Create items + flip seats to HELD
         List<ReservationItem> items = new ArrayList<>();
         for (Seat seat : seats) {
             items.add(ReservationItem.builder()
