@@ -20,8 +20,8 @@ import java.util.List;
 @Service
 public class ReservationService {
 
-    private static final int HOLD_MINUTES = 10;
-
+    @org.springframework.beans.factory.annotation.Value("${reservation.hold-minutes}")
+    private int holdMinutes;
     @Autowired private ReservationRepository reservationRepository;
     @Autowired private ReservationItemRepository reservationItemRepository;
     @Autowired private SeatRepository seatRepository;
@@ -32,16 +32,16 @@ public class ReservationService {
     @Transactional
     public ReservationResponseDTO createReservation(ReservationRequestDTO dto) {
 
-        // 1. Identify current customer from JWT
+        // Identify current customer from JWT
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         User customer = userRepository.findByEmail(email)
                 .orElseThrow(() -> new ReservationException("Authenticated user not found"));
 
-        // 2. Load event
+        //  Load event
         Event event = eventRepository.findById(dto.getEventId())
                 .orElseThrow(() -> new ReservationException("Event not found"));
 
-        // 3. *** LOCK THE SEAT ROWS ***
+        // LOCK THE SEAT ROWS
         List<Seat> seats = seatRepository.findAllByIdInAndEventIdForUpdate(
                 dto.getSeatIds(), event.getId());
 
@@ -49,27 +49,26 @@ public class ReservationService {
             throw new ReservationException("One or more seats do not belong to this event");
         }
 
-        // 4. Every seat must currently be AVAILABLE
-        //    (we are holding the lock, so no other transaction can flip it under us)
+        // Every seat must currently be AVAILABLE
         for (Seat seat : seats) {
             if (seat.getStatus() != SeatStatus.AVAILABLE) {
                 throw new ReservationException("Seat " + seat.getSeatNumber() + " is not available");
             }
         }
 
-        // 5. Build the reservation
+        // Build the reservation
         LocalDateTime now = LocalDateTime.now();
         Reservation reservation = Reservation.builder()
                 .customer(customer)
                 .event(event)
                 .status(ReservationStatus.PENDING)
                 .createdAt(now)
-                .expiresAt(now.plusMinutes(HOLD_MINUTES))
+                .expiresAt(now.plusMinutes(holdMinutes))
                 .build();
 
         reservation = reservationRepository.save(reservation);
 
-        // 6. Create items + flip seats to HELD
+        // Create items + flip seats to HELD
         List<ReservationItem> items = new ArrayList<>();
         for (Seat seat : seats) {
             items.add(ReservationItem.builder()
@@ -99,6 +98,39 @@ public class ReservationService {
                 .stream()
                 .map(this::toResponseFromDb)
                 .toList();
+    }
+    @Transactional
+    public void cancelReservation(Long reservationId) {
+        // Find reservation
+        Reservation reservation = reservationRepository.findById(reservationId)
+                .orElseThrow(() -> new ReservationException("Reservation not found"));
+
+        // Verify ownership (only the person who booked it can cancel)
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        User caller = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ReservationException("User not found"));
+
+        if (!reservation.getCustomer().getId().equals(caller.getId())) {
+            throw new ReservationException("You can only cancel your own reservations");
+        }
+
+        // Verify state (can't cancel something already EXPIRED or CANCELLED)
+        if (reservation.getStatus() != ReservationStatus.PENDING &&
+                reservation.getStatus() != ReservationStatus.CONFIRMED) {
+            throw new ReservationException("Cannot cancel a reservation with status: " + reservation.getStatus());
+        }
+
+        // Update status and free the seats
+        reservation.setStatus(ReservationStatus.CANCELLED);
+
+        List<ReservationItem> items = reservationItemRepository.findByReservationId(reservationId);
+        for (ReservationItem item : items) {
+            Seat seat = item.getSeat();
+            seat.setStatus(SeatStatus.AVAILABLE);
+            seatRepository.save(seat);
+        }
+
+        reservationRepository.save(reservation);
     }
 
     // Mapping helpers

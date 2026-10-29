@@ -45,6 +45,7 @@ public class SecurityConfig {
                         .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll()
                         .requestMatchers("/api/events/**").permitAll()   // browsing events is public
                         // role-gated examples (add as you build endpoints)
+                        .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll()
                         .requestMatchers("/api/venues/**").hasAnyRole("ORGANIZER", "ADMIN")
                         .requestMatchers("/api/reservations/**").hasAnyRole("CUSTOMER", "ADMIN")
                         .requestMatchers("/api/payments/**").hasAnyRole("CUSTOMER")

@@ -36,4 +36,11 @@ public class ReservationController {
     public ResponseEntity<ReservationResponseDTO> get(@PathVariable Long id) {
         return ResponseEntity.ok(reservationService.getById(id));
     }
+
+    @PreAuthorize("hasAnyRole('CUSTOMER','ADMIN')")
+    @PatchMapping("/{id}/cancel")
+    public ResponseEntity<Void> cancel(@PathVariable Long id) {
+        reservationService.cancelReservation(id);
+        return ResponseEntity.noContent().build(); // Returns HTTP 204 No Content
+    }
 }
